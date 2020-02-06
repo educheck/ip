@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title id="title">IP</title>
+    <link href="https://fonts.googleapis.com/css?family=Righteous&display=swap" rel="stylesheet"> <!-- Righteous -->
+    <style>
+        @font-face { font-family: 'cookieb'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/CookieRunOTF-Bold00.woff') format('woff'); font-weight: normal; font-style: normal; }
+        @font-face { font-family: 'cookier'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff') format('woff'); font-weight: normal; font-style: normal; }
+        @font-face { font-family: 'BR'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/BRBA_B.woff') format('woff'); font-weight: normal; font-style: normal; }
+        @font-face { font-family: 'KOMACON'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.2/KOMACON.woff') format('woff'); font-weight: normal; font-style: normal; }
+        @font-face { font-family: 'mapop'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoPeacefullA.woff') format('woff'); font-weight: normal; font-style: normal; }
+        @font-face { font-family: 'NBC'; src: url('https://cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'); font-weight: normal; font-style: normal; }
+        @font-face { font-family: 'BBTree'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_nine_@1.1/BBTreeGR.woff') format('woff'); font-weight: normal; font-style: normal; }
+        body {
+            text-align: center;
+        }
+        #qu {
+            font-family: 'cookier';
+        }
+        #ip {
+            font-family: 'cookieb';
+        }
+        #loader {
+            width: 100vw;
+            height: 100vh;
+            background-color: rgb(212, 238, 246);
+            color: black;
+            z-index: 3;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+        #loadfoot {
+            position: fixed;
+            bottom: 5px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0 auto;
+            color:darkgray;
+        }
+        #loadfoot a {
+            color:gray;
+        }
+        #country {
+            font-family: 'BBTree';
+        }
+        #ipmain {
+            position: absolute;
+            left: 50%;
+            top: 35%;
+            transform: translate(-50%, -50%);
+        }
+        #TITLE {
+            font-family: 'Righteous','NanumBarunGothic', sans-serif;
+        }
+        body {
+            background-color: rgb(212, 238, 246);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div id="loader">
+        <h1 style="font-family:'KOMACON'; ">This Site is loading in progress...</h1>
+        <br>
+        <h3 style="font-family:'mapop';">This may vary how fast and stable your internet connection is.</h3>
+        <br> <br>
+        <h4 id="loadfoot" style="font-family:'NanumBarunaGothic', 'NBC';">Credits: Thanks to <a href="https://ip.pe.kr">ip.pe.kr</a> for the Internet Protocol API.</h4>
+    </div>
+    <!-- Loader End -->
+    <h1 id="TITLE">I-want-my-IP</h1>
+    <div id="ipmain">
+        <h2 id="qu">Your IP Address is</h2>
+        <h1 id="ip"></h1>
+        <h2 id="country"></h2>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script a="jQuery">
+        var api;
+        var code;
+        var Name;
+        var country = document.getElementById('country');
+        $(window).on("load", function() {
+            $.ajax({
+                url: "https://api.ip.pe.kr/"
+            }).done(function(data) {
+                api = data;
+                var ip = document.getElementById('ip');
+                ip.textContent = api;
+                document.getElementById("title").textContent = "Your IP Address is " + api;
+                document.getElementById('loader').style.display = "none";
+            }).fail(function() {
+                alert("Connection Error.");
+            });
+        });
+        $(window).on("load", function() {
+            $.ajax({
+                url: "https://api.ip.pe.kr/json"
+            }).done(function(json) {
+                code = json.country_code;
+                // Get Country Name
+                $(function() {
+                    $.ajax({
+                        url: "https://educheck.github.io/ip/countrycode.json"
+                    }).done(function(cname) {
+                        Name = cname[code];
+                        country.textContent = "You are connected to " + Name;
+                        if (Name == undefined) {country.textContent = "You are connected to a country with code " + code;}
+                    }).fail(function() {
+                        country.textContent = 'You are connected to a country with code ' + code;
+                    })
+                })
+                // Get Country Name
+            })
+        })
+
+    </script>
+</body>
+</html>
